@@ -1,0 +1,4 @@
+/.vscode
+*.o
+/data/results/*.txt
+/data/tests/*.txt
