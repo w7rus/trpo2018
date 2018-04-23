@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     putch('\n');
 
     if (chdir(directory)) {
-        printf("Error: Failed to change dir to (%s)", directory);
+        printf("[Error]: Failed to change dir to (%s)", directory);
         putch('\n');
         printf("Exiting...");
         exit(9);
@@ -40,11 +40,11 @@ int main(int argc, char *argv[]) {
 
     printf("Selected file: %s", inputFilename);
     putch('\n');
-    printf("Stage: Opening... ");
-    FILE * ptrFile = fopen(inputFilename, "r");
+    printf("[Stage]: Opening... ");
+    FILE * ptrFile = fopen(inputFilename, "rb");
 
     if (ptrFile == NULL) {
-        printf("Error: Failed to open file (%s)", inputFilename);
+        printf("[Error]: Failed to open file (%s)", inputFilename);
         putch('\n');
         printf("Exiting...");
         exit(9);
@@ -53,16 +53,16 @@ int main(int argc, char *argv[]) {
     printf("Done!");
     putch('\n');
 
-    printf("Stage: Allocating buffer for opened file... ");
+    printf("[Stage]: Allocating buffer for opened file... ");
 
     fseek(ptrFile, 0, SEEK_END);
-	unsigned int ptrFileSize = ftell(ptrFile);
-	rewind(ptrFile);
+    unsigned int ptrFileSize = ftell(ptrFile);
+    rewind(ptrFile);
 
     char * ptrFileBuffer = (char*) malloc((sizeof(char) * ptrFileSize) + sizeof(char));
 
     if (ptrFileBuffer == NULL) {
-        printf("Error: Failed to allocate buffer for (%d) bytes", ptrFileSize + sizeof(char));
+        printf("[Error]: Failed to allocate buffer for (%d) bytes", ptrFileSize + sizeof(char));
         putch('\n');
         printf("Exiting...");
         exit(9);
@@ -71,12 +71,12 @@ int main(int argc, char *argv[]) {
     printf("Done! (%d) Bytes", ptrFileSize + sizeof(char));
     putch('\n');
 
-    printf("Stage: Writing opened file to buffer... ");
+    printf("[Stage]: Writing opened file to buffer... ");
 
     unsigned int ptrFileSizeRead = fread(ptrFileBuffer, sizeof(char), ptrFileSize, ptrFile);
 
     if (ptrFileSizeRead != ptrFileSize) {
-        printf("Error: Failed to write file in buffer");
+        printf("[Error]: Failed to write file in buffer");
         putch('\n');
         printf("Exiting...");
         exit(9);
@@ -87,14 +87,14 @@ int main(int argc, char *argv[]) {
     printf("Done! Wrote (%d) out of (%d) Bytes", ptrFileSizeRead, ptrFileSize);
     putch('\n');
 
-    printf("Stage: Closing opened file... ");
+    printf("[Stage]: Closing opened file... ");
     fclose(ptrFile);
     printf("Done");
     putch('\n');
     putch('\n');
 
     if (debug) {
-        printf("Debug: Print what is saved in ptrFileBuffer");
+        printf("[Debug]: Print what is saved in ptrFileBuffer");
         putch('\n');
         printf("%s", ptrFileBuffer);
     }
