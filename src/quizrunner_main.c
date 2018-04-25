@@ -12,7 +12,87 @@
 
 #define BUFSIZE MAX_PATH
 
-void run_quiz() {
+void run_quizDataExtraction(unsigned long int ptrFileSize, char ** ptrFileBuffer, int debug) {
+    char quiz_propAlias_Buffer[16];
+    int quiz_propAlias_BufferOffset = 0;
+    int quiz_propMode = 0;
+    unsigned long int quiz_propValue_BufferOffset = 0;
+
+    putch('\n');
+
+    for (unsigned long int ptrFileBufferOffset = 0; ptrFileBufferOffset < ptrFileSize; ptrFileBufferOffset++) {
+        if ((*ptrFileBuffer)[ptrFileBufferOffset] == '\n') {
+            quiz_propMode = 0;
+            continue;
+        }
+
+        if ((*ptrFileBuffer)[ptrFileBufferOffset] == '=') {
+            quiz_propMode = 1;
+            quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = 0;
+            if (debug) {
+                printf("[DEBUG]: Function printed (quiz_propAlias_Buffer %s)\n", quiz_propAlias_Buffer);
+                printf("[DEBUG]: Function printed (quiz_propAlias_BufferOffset %d)\n", quiz_propAlias_BufferOffset);
+            }
+            quiz_propAlias_BufferOffset = 0;
+            continue;
+        }
+
+        if (quiz_propMode == 0) {
+            quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = (*ptrFileBuffer)[ptrFileBufferOffset];
+            quiz_propAlias_BufferOffset++;
+        }
+
+        if (quiz_propMode == 1) {
+            quiz_propValue_BufferOffset = ptrFileBufferOffset;
+
+            while ((*ptrFileBuffer)[quiz_propValue_BufferOffset] != '\n') {
+                quiz_propValue_BufferOffset++;
+            }
+
+            if (debug) {
+                printf("[DEBUG]: Function printed (ptrFileBufferOffset %lu)\n", ptrFileBufferOffset);
+                printf("[DEBUG]: Function printed (quiz_propValue_BufferOffset %lu)\n", quiz_propValue_BufferOffset);
+                printf("[DEBUG]: Function printed (quizPropValueSize %lu)\n", quiz_propValue_BufferOffset - ptrFileBufferOffset);
+            }
+
+            char * quiz_propValue_Buffer = 0;
+            quiz_propValue_Buffer = (char*) malloc((sizeof(char) * (quiz_propValue_BufferOffset - ptrFileBufferOffset) + sizeof(char)));
+
+            for (unsigned int quiz_propValue_BufferOffsetRelative = 0; ptrFileBufferOffset < quiz_propValue_BufferOffset;) {
+                quiz_propValue_Buffer[quiz_propValue_BufferOffsetRelative] = (*ptrFileBuffer)[ptrFileBufferOffset];
+                quiz_propValue_Buffer[quiz_propValue_BufferOffsetRelative + 1] = 0;
+                ptrFileBufferOffset++;
+                quiz_propValue_BufferOffsetRelative++;
+            }
+
+            if (debug) {
+                printf("[DEBUG]: Function printed (quiz_propValue_Buffer %s)\n\n", quiz_propValue_Buffer);
+            }
+
+            quiz_propMode = 0;
+
+            if (strcmp(quiz_propAlias_Buffer, "NAME") == 0) {
+                printf("Quiz name: %s\n", quiz_propValue_Buffer);
+            }
+
+            if (strcmp(quiz_propAlias_Buffer, "DESCRIPTION") == 0) {
+                printf("Quiz description: %s\n", quiz_propValue_Buffer);
+            }
+
+            if (strcmp(quiz_propAlias_Buffer, "AUTHOR") == 0) {
+                printf("Quiz author: %s\n", quiz_propValue_Buffer);
+            }
+
+            if (strcmp(quiz_propAlias_Buffer, "QUESTION") == 0) {
+                //TODO: Create new structure and attach it to head structure of string pointers
+            }
+        }
+
+
+    }
+
+    if (!debug) putch('\n');
+
     return;
 }
 
@@ -53,7 +133,7 @@ int main(int argc, char *argv[]) {
 
     /////////////////STARTOFPTRFILEBUFFERMANIPULATIONS//////////////////
 
-    printf("[Stage 1/5]: Opening... ");
+    printf("[Stage 1/6]: Opening... ");
 
     FILE * ptrFile = NULL;
 
@@ -64,7 +144,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("[Stage 2/5]: Allocating buffer for opened file... ");
+    printf("[Stage 2/6]: Allocating buffer for opened file... ");
 
     unsigned long int ptrFileSize = 0;
     char * ptrFileBuffer = NULL;
@@ -75,7 +155,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("[Stage 3/5]: Writing opened file to buffer... ");
+    printf("[Stage 3/6]: Writing opened file to buffer... ");
 
     unsigned long int ptrFileSizeRead = 0;
 
@@ -85,7 +165,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("[Stage 4/5]: Closing opened file... ");
+    printf("[Stage 4/6]: Closing opened file... ");
     quizrunner_closefile(&ptrFile, debug);
 
     /////////////////ENDOFPTRFILEBUFFERMANIPULATIONS//////////////////
@@ -99,17 +179,22 @@ int main(int argc, char *argv[]) {
         putch('\n');
     }
 
-    printf("[Stage 5/5]: Running Quiz tests sequence... ");
+    printf("[Stage 5/6]: Running Quiz tests data extraction sequence... ");
     putch('\n');
 
-    //run_quiz();
+    //TODO: Make structure list of pointers to questions strings
+
+    run_quizDataExtraction(ptrFileSize, &ptrFileBuffer, debug);
+
+    printf("[Stage 6/6]: Running Quiz... ");
+    putch('\n');
 
     printf("[INFO]: Exiting Quiz tests sequence... ");
     putch('\n');
 
     getch();
 
-    system("cls");
+    //system("cls");
 
     return 0;
 }

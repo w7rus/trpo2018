@@ -13,7 +13,7 @@ int quizrunner_openfile(FILE ** ptrFile, char ptrFileName[255], int debug) {
         printf("[DEBUG]: ptrFile returned (0x%p)\n", ptrFile);
     }
 
-    if (ptrFile == NULL) {
+    if (*ptrFile == NULL) {
         if (debug) {
             printf("[DEBUG]: Function returned %d\n", 1);
         }

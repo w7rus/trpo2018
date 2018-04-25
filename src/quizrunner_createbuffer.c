@@ -15,13 +15,20 @@ int quizrunner_createbuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, ch
         printf("[DEBUG]: ptrFileSize returned (%lu)\n", *ptrFileSize);
     }
 
+    if (*ptrFileSize > 1048576) {
+        if (debug) {
+            printf("[DEBUG]: Function returned %d\n", 2);
+        }
+        return 2;
+    }
+
     *ptrFileBuffer = (char*) malloc((sizeof(char) * (*ptrFileSize)) + sizeof(char));
 
     if (debug) {
         printf("[DEBUG]: ptrFileBuffer returned (0x%p)\n", ptrFileBuffer);
     }
 
-    if (ptrFileBuffer == NULL) {
+    if (*ptrFileBuffer == NULL) {
         if (debug) {
             printf("[DEBUG]: Function returned %d\n", 1);
         }
