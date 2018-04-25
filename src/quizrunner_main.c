@@ -4,116 +4,13 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "quizrunner_changedir.h"
+#include "quizrunner_closefile.h"
+#include "quizrunner_createbuffer.h"
+#include "quizrunner_openfile.h"
+#include "quizrunner_writetobuffer.h"
+
 #define BUFSIZE MAX_PATH
-
-int quizrunner_changedir(char dirpath[MAX_PATH], int debug) {
-    int result = chdir(dirpath);
-    if (result) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", result);
-        }
-        return 1;
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", result);
-    }
-    return 0;
-}
-
-int quizrunner_openfile(FILE ** ptrFile, char ptrFileName[255], int debug) {
-    putch('\n');
-
-    *ptrFile = fopen(ptrFileName, "rb");
-
-    if (debug) {
-        printf("[DEBUG]: ptrFile returned (0x%p)\n", ptrFile);
-    }
-
-    if (ptrFile == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-        }
-        return 1;
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int quizrunner_createbuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, char ** ptrFileBuffer, int debug) {
-    putch('\n');
-
-    fseek(*ptrFile, 0, SEEK_END);
-    *ptrFileSize = ftell(*ptrFile);
-    rewind(*ptrFile);
-
-    if (debug) {
-        printf("[DEBUG]: ptrFileSize returned (%lu)\n", *ptrFileSize);
-    }
-
-    *ptrFileBuffer = (char*) malloc((sizeof(char) * (*ptrFileSize)) + sizeof(char));
-
-    if (debug) {
-        printf("[DEBUG]: ptrFileBuffer returned (0x%p)\n", ptrFileBuffer);
-    }
-
-    if (ptrFileBuffer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-        }
-        return 1;
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int quizrunner_writetobuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, unsigned long int * ptrFileSizeRead, char ** ptrFileBuffer, int debug) {
-    putch('\n');
-
-    *ptrFileSizeRead = fread(*ptrFileBuffer, sizeof(char), *ptrFileSize, *ptrFile);
-
-    if (debug) {
-        printf("[DEBUG]: ptrFileSizeRead returned (%lu)\n", *ptrFileSizeRead);
-    }
-
-    if (*ptrFileSize != *ptrFileSizeRead) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-        }
-        return 1;
-    }
-
-    *ptrFileBuffer[*ptrFileSize] = 0;
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int quizrunner_closefile(FILE ** ptrFile, int debug) {
-    putch('\n');
-
-    if (*ptrFile == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-        }
-        return 1;
-    }
-
-    fclose(*ptrFile);
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 1);
-    }
-    return 0;
-}
 
 void run_quiz() {
     return;
@@ -139,7 +36,7 @@ int main(int argc, char *argv[]) {
     putch('\n');
     putch('\n');
 
-    printf("Please specity tests directory path (for default type .\\build\\..\\data\\tests): ");
+    printf("Please specity tests directory path (for default type \".\\bin\\..\\data\\tests\"): ");
     char dirpath[MAX_PATH];
     scanf("%s", dirpath);
 
@@ -206,6 +103,9 @@ int main(int argc, char *argv[]) {
     putch('\n');
 
     //run_quiz();
+
+    printf("[INFO]: Exiting Quiz tests sequence... ");
+    putch('\n');
 
     getch();
 

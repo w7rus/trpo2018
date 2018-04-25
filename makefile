@@ -1,15 +1,37 @@
 GCC = gcc
 GCCFLAGS = -c -Wall -Werror
-VPATH = src
-PATH_SRC = ./src/
+VPATH = src:build
+PATH_IN = ./src/
 PATH_BUILD = ./build/
+PATH_OUT = ./bin/
+QZ_F_CHDIR = quizrunner_changedir
+QZ_F_CFILE = quizrunner_closefile
+QZ_F_CRBUF = quizrunner_createbuffer
+QZ_F_MAIN = quizrunner_main
+QZ_F_OFILE = quizrunner_openfile
+QZ_F_WTBUF = quizrunner_writetobuffer
 
 all: prog
 
-prog: quizrunner_main.o
-	$(GCC) quizrunner_main.o -o $(PATH_BUILD)prog.exe
+prog: $(QZ_F_MAIN).o $(QZ_F_CHDIR).o $(QZ_F_CHDIR).o $(QZ_F_CFILE).o $(QZ_F_CRBUF).o $(QZ_F_OFILE).o $(QZ_F_WTBUF).o
+	$(GCC) $(PATH_BUILD)$(QZ_F_MAIN).o $(PATH_BUILD)$(QZ_F_CHDIR).o $(PATH_BUILD)$(QZ_F_CFILE).o $(PATH_BUILD)$(QZ_F_CRBUF).o $(PATH_BUILD)$(QZ_F_OFILE).o $(PATH_BUILD)$(QZ_F_WTBUF).o -o $(PATH_OUT)prog.exe
 
-quizrunner_main.o: quizrunner_main.c
-	$(GCC) $(GCCFLAGS) $(PATH_SRC)quizrunner_main.c
+$(QZ_F_MAIN).o: $(QZ_F_MAIN).c
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_MAIN).o $(PATH_IN)$(QZ_F_MAIN).c
+
+$(QZ_F_CHDIR).o: $(QZ_F_CHDIR).c $(QZ_F_CHDIR).h
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_CHDIR).o $(PATH_IN)$(QZ_F_CHDIR).c
+
+$(QZ_F_CFILE).o: $(QZ_F_CFILE).c $(QZ_F_CFILE).h
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_CFILE).o $(PATH_IN)$(QZ_F_CFILE).c
+
+$(QZ_F_CRBUF).o: $(QZ_F_CRBUF).c $(QZ_F_CRBUF).h
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_CRBUF).o $(PATH_IN)$(QZ_F_CRBUF).c
+
+$(QZ_F_OFILE).o: $(QZ_F_OFILE).c $(QZ_F_OFILE).h
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_OFILE).o $(PATH_IN)$(QZ_F_OFILE).c
+
+$(QZ_F_WTBUF).o: $(QZ_F_WTBUF).c $(QZ_F_WTBUF).h
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_WTBUF).o $(PATH_IN)$(QZ_F_WTBUF).c
 
 clean: rm -rf *.o *.exe
