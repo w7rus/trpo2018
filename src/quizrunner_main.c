@@ -12,7 +12,28 @@
 
 #define BUFSIZE MAX_PATH
 
-void run_quizDataExtraction(unsigned long int ptrFileSize, char ** ptrFileBuffer, int debug) {
+typedef struct node {
+    struct node * next;
+    struct node * prev;
+    char * data;
+} node_t;
+
+void quizrunner_addListElement(node_t ** tail, char * input) {
+    node_t * p = malloc(sizeof(node_t));
+    p -> next = 0;
+    p -> prev = *tail;
+    (*tail) -> next = p;
+    *tail = p;
+    p -> data = input;
+}
+
+void quizrunner_printList(node_t * p) {
+    for (p = p -> next; p; p = p -> next) {
+        printf("[%p] %s\n", p, p -> data);
+    }
+}
+
+int run_quizDataExtraction(unsigned long int ptrFileSize, char ** ptrFileBuffer, int debug, char *** quiz_detailsBuffer, node_t ** tail_listQuestion, node_t ** tail_listAnswer) {
     char quiz_propAlias_Buffer[16];
     int quiz_propAlias_BufferOffset = 0;
     int quiz_propMode = 0;
@@ -27,6 +48,9 @@ void run_quizDataExtraction(unsigned long int ptrFileSize, char ** ptrFileBuffer
         }
 
         if ((*ptrFileBuffer)[ptrFileBufferOffset] == '=') {
+            if ((*ptrFileBuffer)[ptrFileBufferOffset + 1] == '\n') {
+                return 1;
+            }
             quiz_propMode = 1;
             quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = 0;
             if (debug) {
@@ -72,28 +96,32 @@ void run_quizDataExtraction(unsigned long int ptrFileSize, char ** ptrFileBuffer
             quiz_propMode = 0;
 
             if (strcmp(quiz_propAlias_Buffer, "NAME") == 0) {
-                printf("Quiz name: %s\n", quiz_propValue_Buffer);
+               (*quiz_detailsBuffer)[0] = quiz_propValue_Buffer;
             }
 
             if (strcmp(quiz_propAlias_Buffer, "DESCRIPTION") == 0) {
-                printf("Quiz description: %s\n", quiz_propValue_Buffer);
+                (*quiz_detailsBuffer)[1] = quiz_propValue_Buffer;
             }
 
             if (strcmp(quiz_propAlias_Buffer, "AUTHOR") == 0) {
-                printf("Quiz author: %s\n", quiz_propValue_Buffer);
+                (*quiz_detailsBuffer)[2] = quiz_propValue_Buffer;
+            }
+
+            if (strcmp(quiz_propAlias_Buffer, "TIME") == 0) {
+                (*quiz_detailsBuffer)[3] = quiz_propValue_Buffer;
             }
 
             if (strcmp(quiz_propAlias_Buffer, "QUESTION") == 0) {
-                //TODO: Create new structure and attach it to head structure of string pointers
+                quizrunner_addListElement(*(&tail_listQuestion), quiz_propValue_Buffer);
+            }
+
+            if (strcmp(quiz_propAlias_Buffer, "ANSWER") == 0) {
+                quizrunner_addListElement(*(&tail_listAnswer), quiz_propValue_Buffer);
             }
         }
-
-
     }
 
-    if (!debug) putch('\n');
-
-    return;
+    return 0;
 }
 
 int main(int argc, char *argv[]) {
@@ -184,7 +212,66 @@ int main(int argc, char *argv[]) {
 
     //TODO: Make structure list of pointers to questions strings
 
-    run_quizDataExtraction(ptrFileSize, &ptrFileBuffer, debug);
+    char ** quiz_detailsBuffer = 0;
+    quiz_detailsBuffer = malloc(sizeof(char *) * 4);
+    quiz_detailsBuffer[0] = NULL;
+    quiz_detailsBuffer[1] = NULL;
+    quiz_detailsBuffer[2] = NULL;
+    quiz_detailsBuffer[3] = NULL;
+
+    node_t * head_listQuestion;
+    node_t * tail_listQuestion;
+    head_listQuestion = tail_listQuestion = malloc(sizeof(node_t));
+    head_listQuestion -> next = 0;
+    head_listQuestion -> prev = 0;
+    head_listQuestion -> data = 0;
+
+    node_t * head_listAnswer;
+    node_t * tail_listAnswer;
+    head_listAnswer = tail_listAnswer = malloc(sizeof(node_t));
+    head_listAnswer -> next = 0;
+    head_listAnswer -> prev = 0;
+    head_listAnswer -> data = 0;
+
+    node_t * head_listInput;
+    node_t * tail_listInput;
+    head_listInput = tail_listInput = malloc(sizeof(node_t));
+    head_listInput -> next = 0;
+    head_listInput -> prev = 0;
+    head_listInput -> data = 0;
+
+    if(run_quizDataExtraction(ptrFileSize, &ptrFileBuffer, debug, &quiz_detailsBuffer, &tail_listQuestion, &tail_listAnswer)) {
+        printf("[Error]: Syntax error\n");
+        printf("Exiting...");
+        return 0;
+    }
+
+    if (quiz_detailsBuffer[0] != NULL) {
+        printf("Quiz Name: %s\n", quiz_detailsBuffer[0]);
+    }
+
+    if (quiz_detailsBuffer[1] != NULL) {
+        printf("Quiz Description: %s\n", quiz_detailsBuffer[1]);
+    }
+
+    if (quiz_detailsBuffer[2] != NULL) {
+        printf("Quiz Author: %s\n", quiz_detailsBuffer[2]);
+    }
+
+    if (quiz_detailsBuffer[3] != NULL) {
+        printf("Quiz Completion time: %s\n", quiz_detailsBuffer[3]);
+    }
+
+    if (debug) {
+        putch('\n');
+        printf("[Debug]: Print what is saved in head_listQuestion\n");
+        quizrunner_printList(head_listQuestion);
+        putch('\n');
+        printf("[Debug]: Print what is saved in head_listAnswer\n");
+        quizrunner_printList(head_listAnswer);
+    }
+
+    putch('\n');
 
     printf("[Stage 6/6]: Running Quiz... ");
     putch('\n');
@@ -194,7 +281,7 @@ int main(int argc, char *argv[]) {
 
     getch();
 
-    //system("cls");
+    system("cls");
 
     return 0;
 }
