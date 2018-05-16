@@ -18,6 +18,7 @@ int quizrunner_createbuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, ch
     if (*ptrFileSize > 1048576) {
         if (debug) {
             printf("[DEBUG]: Function returned %d\n", 2);
+            printf("[DEBUG]: Size of file exceeds limit of 1048576 Bytes\n");
         }
         return 2;
     }
@@ -31,6 +32,7 @@ int quizrunner_createbuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, ch
     if (*ptrFileBuffer == NULL) {
         if (debug) {
             printf("[DEBUG]: Function returned %d\n", 1);
+            printf("[DEBUG]: Pointer points to NULL\n");
         }
         return 1;
     }

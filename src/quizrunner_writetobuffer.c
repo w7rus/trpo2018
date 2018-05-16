@@ -16,6 +16,7 @@ int quizrunner_writetobuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, u
     if (*ptrFileSize != *ptrFileSizeRead) {
         if (debug) {
             printf("[DEBUG]: Function returned %d\n", 1);
+            printf("[DEBUG]: Buffer sizes are not equal\n");
         }
         return 1;
     }

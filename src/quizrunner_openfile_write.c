@@ -4,18 +4,21 @@
 #include <string.h>
 #include <unistd.h>
 
-int quizrunner_closefile(FILE ** ptrFile, int debug) {
+int quizrunner_openfile_write(FILE ** ptrFile, char ptrFileName[255], int debug) {
     putch('\n');
+
+    *ptrFile = fopen(ptrFileName, "w");
+
+    if (debug) {
+        printf("[DEBUG]: ptrFile returned (0x%p)\n", ptrFile);
+    }
 
     if (*ptrFile == NULL) {
         if (debug) {
             printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
         }
         return 1;
     }
-
-    fclose(*ptrFile);
 
     if (debug) {
         printf("[DEBUG]: Function returned %d\n", 0);
