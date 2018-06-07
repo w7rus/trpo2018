@@ -11,8 +11,16 @@
 #include "quizrunner_openfile.h"
 #include "quizrunner_openfile_write.h"
 #include "quizrunner_writetobuffer.h"
+#include "quizrunner_printlist.h"
+#include "quizrunner_addlistelement.h"
+#include "quizrunner_dataextract.h"
+#include "quizrunner_dataexchange.h"
+#include "quizrunner_datacompare.h"
 
 #define BUFSIZE MAX_PATH
+
+#ifndef _QUIZRUNNER_NODESTRUCT_DEFINE
+#define _QUIZRUNNER_NODESTRUCT_DEFINE
 
 typedef struct node {
     struct node * next;
@@ -20,275 +28,7 @@ typedef struct node {
     char * data;
 } node_t;
 
-int quizrunner_addListElement(node_t ** adressof_tail_struct_pointer, char * string_pointer, int debug) {
-    if (*adressof_tail_struct_pointer == NULL || string_pointer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
-        }
-        return 1;
-    }
-
-    node_t * head_struct_pointer = malloc(sizeof(node_t));
-    head_struct_pointer -> next = 0;
-    head_struct_pointer -> prev = *adressof_tail_struct_pointer;
-    (*adressof_tail_struct_pointer) -> next = head_struct_pointer;
-    *adressof_tail_struct_pointer = head_struct_pointer;
-    head_struct_pointer -> data = string_pointer;
-    
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int quizrunner_printList(node_t * head_struct_pointer, int debug) {
-    if (head_struct_pointer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
-        }
-        return 1;
-    }
-
-    for (head_struct_pointer = head_struct_pointer -> next; head_struct_pointer; head_struct_pointer = head_struct_pointer -> next) {
-        printf("[%p] %s\n", head_struct_pointer, head_struct_pointer -> data);
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int run_quizDataExtraction(unsigned long int ptrFileSize, char ** ptrFileBuffer, int debug, char *** quiz_detailsBuffer, node_t ** adressof_tail_struct_pointer1, node_t ** adressof_tail_struct_pointer2, unsigned long int * quiz_propAmount_Questions, unsigned long int * quiz_propAmount_Answers) {
-    if (*ptrFileBuffer == NULL || *quiz_detailsBuffer == NULL || *adressof_tail_struct_pointer1 == NULL || *adressof_tail_struct_pointer2 == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
-        }
-        return 1;
-    }
-
-    char quiz_propAlias_Buffer[16];
-    int quiz_propAlias_BufferOffset = 0;
-    int quiz_propMode = 0;
-    unsigned long int quiz_propValue_BufferOffset = 0;
-
-    for (unsigned long int ptrFileBufferOffset = 0; ptrFileBufferOffset < ptrFileSize; ptrFileBufferOffset++) {
-        if ((*ptrFileBuffer)[ptrFileBufferOffset] == '\n') {
-            if ((*ptrFileBuffer)[ptrFileBufferOffset + 1] == '\n') {
-                if (debug) {
-                    printf("[DEBUG]: Function returned %d\n", 1);
-                    printf("[DEBUG]: File structure error\n");
-                }
-                return 1;
-            }
-            quiz_propMode = 0;
-            continue;
-        }
-
-        if ((*ptrFileBuffer)[ptrFileBufferOffset] == '=') {
-            if ((*ptrFileBuffer)[ptrFileBufferOffset + 1] == '\n') {
-                if (debug) {
-                    printf("[DEBUG]: Function returned %d\n", 1);
-                    printf("[DEBUG]: File structure error\n");
-                }
-                return 1;
-            }
-            quiz_propMode = 1;
-            quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = 0;
-            if (debug) {
-                printf("\n[DEBUG]: Function printed (quiz_propAlias_Buffer %s)\n", quiz_propAlias_Buffer);
-                printf("[DEBUG]: Function printed (quiz_propAlias_BufferOffset %d)\n", quiz_propAlias_BufferOffset);
-            }
-            quiz_propAlias_BufferOffset = 0;
-            continue;
-        }
-
-        if (quiz_propMode == 0) {
-            quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = (*ptrFileBuffer)[ptrFileBufferOffset];
-            quiz_propAlias_BufferOffset++;
-        }
-
-        if (quiz_propMode == 1) {
-            quiz_propValue_BufferOffset = ptrFileBufferOffset;
-
-            while ((*ptrFileBuffer)[quiz_propValue_BufferOffset] != '\n') {
-                quiz_propValue_BufferOffset++;
-            }
-
-            if (debug) {
-                printf("[DEBUG]: Function printed (ptrFileBufferOffset %lu)\n", ptrFileBufferOffset);
-                printf("[DEBUG]: Function printed (quiz_propValue_BufferOffset %lu)\n", quiz_propValue_BufferOffset);
-                printf("[DEBUG]: Function printed (quizPropValueSize %lu)\n", quiz_propValue_BufferOffset - ptrFileBufferOffset);
-            }
-
-            char * quiz_propValue_Buffer = 0;
-            quiz_propValue_Buffer = (char*) malloc((sizeof(char) * (quiz_propValue_BufferOffset - ptrFileBufferOffset) + sizeof(char)));
-
-            for (unsigned int quiz_propValue_BufferOffsetRelative = 0; ptrFileBufferOffset < quiz_propValue_BufferOffset;) {
-                quiz_propValue_Buffer[quiz_propValue_BufferOffsetRelative] = (*ptrFileBuffer)[ptrFileBufferOffset];
-                quiz_propValue_Buffer[quiz_propValue_BufferOffsetRelative + 1] = 0;
-                ptrFileBufferOffset++;
-                quiz_propValue_BufferOffsetRelative++;
-            }
-
-            if (debug) {
-                printf("[DEBUG]: Function printed (quiz_propValue_Buffer %s)\n\n", quiz_propValue_Buffer);
-            }
-
-            quiz_propMode = 0;
-
-            if (strcmp(quiz_propAlias_Buffer, "NAME") == 0) {
-               (*quiz_detailsBuffer)[0] = quiz_propValue_Buffer;
-            }
-
-            if (strcmp(quiz_propAlias_Buffer, "DESCRIPTION") == 0) {
-                (*quiz_detailsBuffer)[1] = quiz_propValue_Buffer;
-            }
-
-            if (strcmp(quiz_propAlias_Buffer, "AUTHOR") == 0) {
-                (*quiz_detailsBuffer)[2] = quiz_propValue_Buffer;
-            }
-
-            if (strcmp(quiz_propAlias_Buffer, "TIME") == 0) {
-                (*quiz_detailsBuffer)[3] = quiz_propValue_Buffer;
-            }
-
-            if (strcmp(quiz_propAlias_Buffer, "QUESTION") == 0) {
-                quizrunner_addListElement(*(&adressof_tail_struct_pointer1), quiz_propValue_Buffer, debug);
-                *quiz_propAmount_Questions = *quiz_propAmount_Questions + 1;
-            }
-
-            if (strcmp(quiz_propAlias_Buffer, "ANSWER") == 0) {
-                quizrunner_addListElement(*(&adressof_tail_struct_pointer2), quiz_propValue_Buffer, debug);
-                *quiz_propAmount_Answers = *quiz_propAmount_Answers + 1;
-            }
-        }
-    }
-
-    if (*quiz_propAmount_Questions != *quiz_propAmount_Answers || *quiz_propAmount_Questions == 0 || *quiz_propAmount_Answers == 0) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: File structure error\n");
-        }
-        return 1;
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int run_quizDataExchange(node_t * head_struct_pointer, node_t ** adressof_tail_struct_pointer, int debug) {
-    if (head_struct_pointer == NULL || *adressof_tail_struct_pointer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
-        }
-        return 1;
-    }
-
-    unsigned long int counter = 1;
-    for (head_struct_pointer = head_struct_pointer -> next; head_struct_pointer; head_struct_pointer = head_struct_pointer -> next) {
-        char * quiz_propInput_Buffer = 0;
-        quiz_propInput_Buffer = (char*) malloc((sizeof(char) * (32) + sizeof(char)));
-        printf("\n%lu. ", counter);
-        printf("%s\n", head_struct_pointer -> data);
-        printf("Please provide an answer (max 32 symbols): ");
-        scanf("%s", quiz_propInput_Buffer);
-        quizrunner_addListElement(*(&adressof_tail_struct_pointer), quiz_propInput_Buffer, debug);
-        counter++;
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
-
-int run_quizDataCompare(node_t * head_struct_pointer1, node_t * head_struct_pointer2, unsigned long int quiz_propAmount_Answers, char ** quiz_InputCheckArray, int debug) {
-    if (head_struct_pointer1 == NULL || head_struct_pointer2 == NULL || *quiz_InputCheckArray == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
-        }
-        return 1;
-    }
-
-
-    unsigned long int counter = 0;
-    for (head_struct_pointer1 = head_struct_pointer1 -> next, head_struct_pointer2 = head_struct_pointer2 -> next; head_struct_pointer1; head_struct_pointer1 = head_struct_pointer1 -> next, head_struct_pointer2 = head_struct_pointer2 -> next) {
-        unsigned long int data1_elementAmount = 0;
-
-        for (unsigned long int data1_strlen = 0; data1_strlen < strlen(head_struct_pointer1 -> data); data1_strlen++) {
-            if ((head_struct_pointer1 -> data)[data1_strlen] == ',') {
-                data1_elementAmount++;
-            }
-        }
-
-        if (data1_elementAmount) {
-            char ** quiz_InputBuffer = 0;
-            quiz_InputBuffer = malloc(sizeof(char *) * (data1_elementAmount + 1));
-
-            for (unsigned long int quiz_InputBufferElementOffset = 0; quiz_InputBufferElementOffset < (data1_elementAmount + 1); quiz_InputBufferElementOffset++) {
-                quiz_InputBuffer[quiz_InputBufferElementOffset] = malloc(sizeof(char) * 32 + sizeof(char));
-            }
-
-            unsigned long int quiz_InputBufferElementOffset = 0;
-            unsigned long int quiz_InputBufferOffset = 0;
-            unsigned long int quiz_InputBufferOffsetRelative = 0;
-            char quiz_InputBufferOffsetRelativeReset = 0;
-
-            for(;quiz_InputBufferOffset <= strlen(head_struct_pointer1 -> data); quiz_InputBufferOffsetRelative++) {
-                if ((head_struct_pointer1 -> data)[quiz_InputBufferOffsetRelative + quiz_InputBufferOffset] != ',' || (head_struct_pointer1 -> data)[quiz_InputBufferOffsetRelative] != 0) {
-                    if (quiz_InputBufferOffsetRelativeReset) {
-                        quiz_InputBufferOffsetRelative = 0;
-                        quiz_InputBufferOffsetRelativeReset = 0;
-                    }
-                    quiz_InputBuffer[quiz_InputBufferElementOffset][quiz_InputBufferOffsetRelative] = (head_struct_pointer1 -> data)[quiz_InputBufferOffsetRelative + quiz_InputBufferOffset];
-                    quiz_InputBuffer[quiz_InputBufferElementOffset][quiz_InputBufferOffsetRelative + 1] = 0;
-                }
-                if ((head_struct_pointer1 -> data)[quiz_InputBufferOffsetRelative + quiz_InputBufferOffset] == 0) {
-                    break;
-                }
-                if ((head_struct_pointer1 -> data)[quiz_InputBufferOffsetRelative + quiz_InputBufferOffset] == ',') {
-                    quiz_InputBuffer[quiz_InputBufferElementOffset][quiz_InputBufferOffsetRelative] = 0;
-                    quiz_InputBufferOffset = quiz_InputBufferOffset + quiz_InputBufferOffsetRelative + 1;
-                    quiz_InputBufferOffsetRelativeReset = 1;
-                    quiz_InputBufferElementOffset++;
-                }
-            }
-
-            char quiz_InputIsCorrect = 0;
-
-            for (unsigned long int quiz_InputSplitBufferOffset = 0; quiz_InputSplitBufferOffset <= quiz_InputBufferElementOffset && quiz_InputIsCorrect == 0; quiz_InputSplitBufferOffset++) {
-                if (strcmp(quiz_InputBuffer[quiz_InputSplitBufferOffset], head_struct_pointer2 -> data) == 0 ) {
-                    (*quiz_InputCheckArray)[counter] = 1;
-                    quiz_InputIsCorrect = 1;
-                    break;
-                } else {
-                    (*quiz_InputCheckArray)[counter] = 0;
-                }
-            }
-            counter++;
-        } else {
-            if (strcmp(head_struct_pointer1 -> data, head_struct_pointer2 -> data) == 0) {
-                (*quiz_InputCheckArray)[counter] = 1;
-            } else {
-                (*quiz_InputCheckArray)[counter] = 0;
-            }
-            counter++;
-        }
-    }
-
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
-    }
-    return 0;
-}
+#endif
 
 int main(int argc, char *argv[]) {
     int version[3] = {0, 0, 1};
@@ -408,7 +148,7 @@ int main(int argc, char *argv[]) {
     unsigned long int quiz_propAmount_Questions = 0;
     unsigned long int quiz_propAmount_Answers = 0;
 
-    if(run_quizDataExtraction(ptrFileSize, &ptrFileBuffer, debug, &quiz_detailsBuffer, &tail_listQuestion, &tail_listAnswer, &quiz_propAmount_Questions, &quiz_propAmount_Answers)) {
+    if(quizrunner_dataextract(ptrFileSize, &ptrFileBuffer, debug, &quiz_detailsBuffer, &tail_listQuestion, &tail_listAnswer, &quiz_propAmount_Questions, &quiz_propAmount_Answers)) {
         printf("[Error]: Please use -debug launch parameter to trace error...\n");
         printf("Exiting...");
         return 1;
@@ -440,9 +180,9 @@ int main(int argc, char *argv[]) {
 
     if (debug) {
         printf("[Debug]: Print what is saved in head_listQuestion\n");
-        quizrunner_printList(head_listQuestion, debug);
+        quizrunner_printlist(head_listQuestion, debug);
         printf("\n[Debug]: Print what is saved in head_listAnswer\n");
-        quizrunner_printList(head_listAnswer, debug);
+        quizrunner_printlist(head_listAnswer, debug);
         putch('\n');
     }
 
@@ -460,13 +200,13 @@ int main(int argc, char *argv[]) {
 
     unsigned long int timelogpoint01 = clock();
 
-    run_quizDataExchange(head_listQuestion, &tail_listInput, debug);
+    quizrunner_dataexchange(head_listQuestion, &tail_listInput, debug);
 
     unsigned long int timelogpoint02 = clock();
 
     if (debug) {
         printf("\n[Debug]: Print what is saved in head_listInput\n");
-        quizrunner_printList(head_listInput, debug);
+        quizrunner_printlist(head_listInput, debug);
         putch('\n');
     }
 
@@ -480,7 +220,7 @@ int main(int argc, char *argv[]) {
     char * quiz_InputCheckArray = 0;
     quiz_InputCheckArray = malloc(sizeof(char) * quiz_propAmount_Answers);
 
-    run_quizDataCompare(head_listAnswer, head_listInput, quiz_propAmount_Answers, &quiz_InputCheckArray, debug);
+    quizrunner_datacompare(head_listAnswer, head_listInput, quiz_propAmount_Answers, &quiz_InputCheckArray, debug);
 
     if (debug) {
         printf("\n[Debug]: Print what is saved in quiz_InputCheckArray\n");

@@ -1,4 +1,7 @@
-!/*/*.gitkeep
-!/*/*.c
-!/*/*.h
-/*/*.*
+*.*
+!.gitkeep
+!*.c
+!*.h
+!*.txt
+!makefile
+!README.md
