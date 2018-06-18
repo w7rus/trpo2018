@@ -15,24 +15,26 @@ typedef struct node {
 
 #endif
 
-int quizrunner_addlistelement(node_t ** adressof_tail_struct_pointer, char * string_pointer, int debug) {
-    if (*adressof_tail_struct_pointer == NULL || string_pointer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
+int quizrunner_addlistelement(node_t ** struct_01, char * string_01, int int_01) {
+    if (*struct_01 == NULL || string_01 == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
         }
+
         return 1;
     }
 
-    node_t * head_struct_pointer = malloc(sizeof(node_t));
-    head_struct_pointer -> next = 0;
-    head_struct_pointer -> prev = *adressof_tail_struct_pointer;
-    (*adressof_tail_struct_pointer) -> next = head_struct_pointer;
-    *adressof_tail_struct_pointer = head_struct_pointer;
-    head_struct_pointer -> data = string_pointer;
-    
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
+    node_t * new_struct_01 = malloc(sizeof(node_t));
+    new_struct_01 -> next = 0;
+    new_struct_01 -> prev = *struct_01;
+    (*struct_01) -> next = new_struct_01;
+    *struct_01 = new_struct_01;
+    new_struct_01 -> data = string_01;
+
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
     }
+
     return 0;
 }

@@ -6,17 +6,18 @@
 
 #define BUFSIZE MAX_PATH
 
-int quizrunner_changedir(char dirpath[MAX_PATH], int debug) {
-    int result = chdir(dirpath);
-    if (result) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", result);
+int quizrunner_changedir(char string_01[MAX_PATH], int int_01) {
+    int int_02 = chdir(string_01);
+
+    if (int_02) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", int_02);
         }
         return 1;
     }
 
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", result);
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
     }
     return 0;
 }

@@ -4,25 +4,23 @@
 #include <string.h>
 #include <unistd.h>
 
-int quizrunner_openfile(FILE ** ptrFile, char ptrFileName[255], int debug) {
-    putch('\n');
+int quizrunner_openfile(FILE ** file_01, char string_01[255], int int_01, char string_02[8]) {
+    *file_01 = fopen(string_01, string_02);
 
-    *ptrFile = fopen(ptrFileName, "rb");
-
-    if (*ptrFile == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
+    if (*file_01 == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
         }
         return 1;
     }
 
-    if (debug) {
-        printf("[DEBUG]: ptrFile returned (0x%p)\n", ptrFile);
+    if (int_01) {
+        printf("\n[DEBUG]: file_01 returned (0x%p)", file_01);
     }
 
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
     }
     return 0;
 }

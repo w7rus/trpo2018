@@ -12,5 +12,5 @@ typedef struct node {
 
 #endif
 
-int quizrunner_datacompare(node_t * head_struct_pointer1, node_t * head_struct_pointer2, unsigned long int quiz_propAmount_Answers, char ** quiz_InputCheckArray, int debug);
+int quizrunner_datacompare(node_t * struct_01, node_t * struct_02, unsigned long int int_amountAnswers, char ** array_int_validityInputs, int int_01);
 #endif

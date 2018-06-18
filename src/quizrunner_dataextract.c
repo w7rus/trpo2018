@@ -18,123 +18,123 @@ typedef struct node {
 
 #endif
 
-int quizrunner_dataextract(unsigned long int ptrFileSize, char ** ptrFileBuffer, int debug, char *** quiz_detailsBuffer, node_t ** adressof_tail_struct_pointer1, node_t ** adressof_tail_struct_pointer2, unsigned long int * quiz_propAmount_Questions, unsigned long int * quiz_propAmount_Answers) {
-    if (*ptrFileBuffer == NULL || *quiz_detailsBuffer == NULL || *adressof_tail_struct_pointer1 == NULL || *adressof_tail_struct_pointer2 == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
+int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffer, int int_01, char *** array_string_01, node_t ** struct_01, node_t ** struct_02, unsigned long int * int_amountQuestions, unsigned long int * int_amountAnswers) {
+    if (*file_01_buffer == NULL || *array_string_01 == NULL || *struct_01 == NULL || *struct_02 == NULL || *array_string_01 == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
         }
         return 1;
     }
 
-    char quiz_propAlias_Buffer[16];
-    int quiz_propAlias_BufferOffset = 0;
-    int quiz_propMode = 0;
-    unsigned long int quiz_propValue_BufferOffset = 0;
+    char string_bufferPropertyName[16];
+    int int_bufferPropertyName_offset = 0;
+    int int_bufferPropertyName_switch = 0;
+    unsigned long int int_bufferPropertyValue_offset = 0;
 
-    for (unsigned long int ptrFileBufferOffset = 0; ptrFileBufferOffset < ptrFileSize; ptrFileBufferOffset++) {
-        if ((*ptrFileBuffer)[ptrFileBufferOffset] == '\n') {
-            if ((*ptrFileBuffer)[ptrFileBufferOffset + 1] == '\n') {
-                if (debug) {
-                    printf("[DEBUG]: Function returned %d\n", 1);
-                    printf("[DEBUG]: File structure error\n");
+    for (unsigned long int file_01_buffer_offset = 0; file_01_buffer_offset < file_01_size; file_01_buffer_offset++) {
+        if ((*file_01_buffer)[file_01_buffer_offset] == '\n') {
+            if ((*file_01_buffer)[file_01_buffer_offset + 1] == '\n') {
+                if (int_01) {
+                    printf("\n[DEBUG]: Function returned %d", 1);
+                    printf("\n[DEBUG]: File syntax is incorrect. Consider checking documentation...");
                 }
-                return 1;
+                return 2;
             }
-            quiz_propMode = 0;
+            int_bufferPropertyName_switch = 0;
             continue;
         }
 
-        if ((*ptrFileBuffer)[ptrFileBufferOffset] == '=') {
-            if ((*ptrFileBuffer)[ptrFileBufferOffset + 1] == '\n') {
-                if (debug) {
-                    printf("[DEBUG]: Function returned %d\n", 1);
-                    printf("[DEBUG]: File structure error\n");
+        if ((*file_01_buffer)[file_01_buffer_offset] == '=') {
+            if ((*file_01_buffer)[file_01_buffer_offset + 1] == '\n') {
+                if (int_01) {
+                    printf("\n[DEBUG]: Function returned %d", 1);
+                    printf("\n[DEBUG]: File syntax is incorrect. Consider checking documentation...");
                 }
-                return 1;
+                return 2;
             }
-            quiz_propMode = 1;
-            quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = 0;
-            if (debug) {
-                printf("\n[DEBUG]: Function printed (quiz_propAlias_Buffer %s)\n", quiz_propAlias_Buffer);
-                printf("[DEBUG]: Function printed (quiz_propAlias_BufferOffset %d)\n", quiz_propAlias_BufferOffset);
+            int_bufferPropertyName_switch = 1;
+            string_bufferPropertyName[int_bufferPropertyName_offset] = 0;
+            if (int_01) {
+                printf("\n\n[DEBUG]: Function printed (string_bufferPropertyName %s)", string_bufferPropertyName);
+                printf("\n[DEBUG]: Function printed (int_bufferPropertyName_offset %d)", int_bufferPropertyName_offset);
             }
-            quiz_propAlias_BufferOffset = 0;
+            int_bufferPropertyName_offset = 0;
             continue;
         }
 
-        if (quiz_propMode == 0) {
-            quiz_propAlias_Buffer[quiz_propAlias_BufferOffset] = (*ptrFileBuffer)[ptrFileBufferOffset];
-            quiz_propAlias_BufferOffset++;
+        if (int_bufferPropertyName_switch == 0) {
+            string_bufferPropertyName[int_bufferPropertyName_offset] = (*file_01_buffer)[file_01_buffer_offset];
+            int_bufferPropertyName_offset++;
         }
 
-        if (quiz_propMode == 1) {
-            quiz_propValue_BufferOffset = ptrFileBufferOffset;
+        if (int_bufferPropertyName_switch == 1) {
+            int_bufferPropertyValue_offset = file_01_buffer_offset;
 
-            while ((*ptrFileBuffer)[quiz_propValue_BufferOffset] != '\n') {
-                quiz_propValue_BufferOffset++;
+            while ((*file_01_buffer)[int_bufferPropertyValue_offset] != '\n') {
+                int_bufferPropertyValue_offset++;
             }
 
-            if (debug) {
-                printf("[DEBUG]: Function printed (ptrFileBufferOffset %lu)\n", ptrFileBufferOffset);
-                printf("[DEBUG]: Function printed (quiz_propValue_BufferOffset %lu)\n", quiz_propValue_BufferOffset);
-                printf("[DEBUG]: Function printed (quizPropValueSize %lu)\n", quiz_propValue_BufferOffset - ptrFileBufferOffset);
+            if (int_01) {
+                printf("\n[DEBUG]: Function printed (file_01_buffer_offset %lu)", file_01_buffer_offset);
+                printf("\n[DEBUG]: Function printed (int_bufferPropertyValue_offset %lu)", int_bufferPropertyValue_offset);
+                printf("\n[DEBUG]: Function printed (int_bufferPropertyValue_size %lu)", int_bufferPropertyValue_offset - file_01_buffer_offset);
             }
 
-            char * quiz_propValue_Buffer = 0;
-            quiz_propValue_Buffer = (char*) malloc((sizeof(char) * (quiz_propValue_BufferOffset - ptrFileBufferOffset) + sizeof(char)));
+            char * string_bufferPropertyValue = 0;
+            string_bufferPropertyValue = (char*) malloc((sizeof(char) * (int_bufferPropertyValue_offset - file_01_buffer_offset) + sizeof(char)));
 
-            for (unsigned int quiz_propValue_BufferOffsetRelative = 0; ptrFileBufferOffset < quiz_propValue_BufferOffset;) {
-                quiz_propValue_Buffer[quiz_propValue_BufferOffsetRelative] = (*ptrFileBuffer)[ptrFileBufferOffset];
-                quiz_propValue_Buffer[quiz_propValue_BufferOffsetRelative + 1] = 0;
-                ptrFileBufferOffset++;
-                quiz_propValue_BufferOffsetRelative++;
+            for (unsigned int int_bufferPropertyValue_offsetRelative = 0; file_01_buffer_offset < int_bufferPropertyValue_offset;) {
+                string_bufferPropertyValue[int_bufferPropertyValue_offsetRelative] = (*file_01_buffer)[file_01_buffer_offset];
+                string_bufferPropertyValue[int_bufferPropertyValue_offsetRelative + 1] = 0;
+                file_01_buffer_offset++;
+                int_bufferPropertyValue_offsetRelative++;
             }
 
-            if (debug) {
-                printf("[DEBUG]: Function printed (quiz_propValue_Buffer %s)\n\n", quiz_propValue_Buffer);
+            if (int_01) {
+                printf("\n[DEBUG]: Function printed (string_bufferPropertyValue %s)", string_bufferPropertyValue);
             }
 
-            quiz_propMode = 0;
+            int_bufferPropertyName_switch = 0;
 
-            if (strcmp(quiz_propAlias_Buffer, "NAME") == 0) {
-               (*quiz_detailsBuffer)[0] = quiz_propValue_Buffer;
+            if (strcmp(string_bufferPropertyName, "NAME") == 0) {
+               (*array_string_01)[0] = string_bufferPropertyValue;
             }
 
-            if (strcmp(quiz_propAlias_Buffer, "DESCRIPTION") == 0) {
-                (*quiz_detailsBuffer)[1] = quiz_propValue_Buffer;
+            if (strcmp(string_bufferPropertyName, "DESCRIPTION") == 0) {
+                (*array_string_01)[1] = string_bufferPropertyValue;
             }
 
-            if (strcmp(quiz_propAlias_Buffer, "AUTHOR") == 0) {
-                (*quiz_detailsBuffer)[2] = quiz_propValue_Buffer;
+            if (strcmp(string_bufferPropertyName, "AUTHOR") == 0) {
+                (*array_string_01)[2] = string_bufferPropertyValue;
             }
 
-            if (strcmp(quiz_propAlias_Buffer, "TIME") == 0) {
-                (*quiz_detailsBuffer)[3] = quiz_propValue_Buffer;
+            if (strcmp(string_bufferPropertyName, "TIME") == 0) {
+                (*array_string_01)[3] = string_bufferPropertyValue;
             }
 
-            if (strcmp(quiz_propAlias_Buffer, "QUESTION") == 0) {
-                quizrunner_addlistelement(*(&adressof_tail_struct_pointer1), quiz_propValue_Buffer, debug);
-                *quiz_propAmount_Questions = *quiz_propAmount_Questions + 1;
+            if (strcmp(string_bufferPropertyName, "QUESTION") == 0) {
+                quizrunner_addlistelement(*(&struct_01), string_bufferPropertyValue, int_01);
+                *int_amountQuestions = *int_amountQuestions + 1;
             }
 
-            if (strcmp(quiz_propAlias_Buffer, "ANSWER") == 0) {
-                quizrunner_addlistelement(*(&adressof_tail_struct_pointer2), quiz_propValue_Buffer, debug);
-                *quiz_propAmount_Answers = *quiz_propAmount_Answers + 1;
+            if (strcmp(string_bufferPropertyName, "ANSWER") == 0) {
+                quizrunner_addlistelement(*(&struct_02), string_bufferPropertyValue, int_01);
+                *int_amountAnswers = *int_amountAnswers + 1;
             }
         }
     }
 
-    if (*quiz_propAmount_Questions != *quiz_propAmount_Answers || *quiz_propAmount_Questions == 0 || *quiz_propAmount_Answers == 0) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: File structure error\n");
+    if (*int_amountQuestions != *int_amountAnswers) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: File syntax is incorrect. Consider checking documentation...");
         }
-        return 1;
+        return 2;
     }
 
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
     }
     return 0;
 }

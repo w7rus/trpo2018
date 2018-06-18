@@ -12,5 +12,5 @@ typedef struct node {
 
 #endif
 
-int quizrunner_printlist(node_t * head_struct_pointer, int debug);
+int quizrunner_printlist(node_t * struct_01, int int_01);
 #endif

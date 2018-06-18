@@ -4,41 +4,48 @@
 #include <string.h>
 #include <unistd.h>
 
-int quizrunner_createbuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, char ** ptrFileBuffer, int debug) {
-    putch('\n');
-
-    fseek(*ptrFile, 0, SEEK_END);
-    *ptrFileSize = ftell(*ptrFile);
-    rewind(*ptrFile);
-
-    if (debug) {
-        printf("[DEBUG]: ptrFileSize returned (%lu)\n", *ptrFileSize);
-    }
-
-    if (*ptrFileSize > 1048576) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 2);
-            printf("[DEBUG]: Size of file exceeds limit of 1048576 Bytes\n");
-        }
-        return 2;
-    }
-
-    *ptrFileBuffer = (char*) malloc((sizeof(char) * (*ptrFileSize)) + sizeof(char));
-
-    if (debug) {
-        printf("[DEBUG]: ptrFileBuffer returned (0x%p)\n", ptrFileBuffer);
-    }
-
-    if (*ptrFileBuffer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
+int quizrunner_createbuffer(FILE ** file_01, unsigned long int * file_01_size, char ** string_01, int int_01) {
+    if (*file_01 == NULL || file_01_size == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
         }
         return 1;
     }
 
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
+    fseek(*file_01, 0, SEEK_END);
+    *file_01_size = ftell(*file_01);
+    rewind(*file_01);
+
+    if (int_01) {
+        printf("\n[DEBUG]: file_01_size returned (%lu)", *file_01_size);
     }
+
+    if (*file_01_size > 1048576) {//1MB limit
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 2);
+            printf("\n[DEBUG]: Size of file exceeds limit of 1048576 Bytes");
+        }
+        return 2;
+    }
+
+    *string_01 = (char*) malloc((sizeof(char) * (*file_01_size)) + sizeof(char));
+
+    if (*string_01 == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
+        }
+        return 3;
+    }
+
+    if (int_01) {
+        printf("\n[DEBUG]: string_01 returned (0x%p)", string_01);
+    }
+
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
+    }
+
     return 0;
 }

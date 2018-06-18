@@ -4,27 +4,33 @@
 #include <string.h>
 #include <unistd.h>
 
-int quizrunner_writetobuffer(FILE ** ptrFile, unsigned long int * ptrFileSize, unsigned long int * ptrFileSizeRead, char ** ptrFileBuffer, int debug) {
-    putch('\n');
-
-    *ptrFileSizeRead = fread(*ptrFileBuffer, sizeof(char), *ptrFileSize, *ptrFile);
-
-    if (debug) {
-        printf("[DEBUG]: ptrFileSizeRead returned (%lu)\n", *ptrFileSizeRead);
-    }
-
-    if (*ptrFileSize != *ptrFileSizeRead) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Buffer sizes are not equal\n");
+int quizrunner_writetobuffer(FILE ** file_01, unsigned long int * file_01_size, unsigned long int * file_01_sizeread, char ** file_01_buffer, int int_01) {
+    if (*file_01 == NULL || file_01_size == NULL || *file_01_buffer == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
         }
         return 1;
     }
+    
+    *file_01_sizeread = fread(*file_01_buffer, sizeof(char), *file_01_size, *file_01);
 
-    (*ptrFileBuffer)[*ptrFileSize] = 0;
+    if (int_01) {
+        printf("\n[DEBUG]: file_01_sizeread returned (%lu)", *file_01_sizeread);
+    }
 
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
+    if (*file_01_size != *file_01_sizeread) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Buffer sizes are not equal");
+        }
+        return 2;
+    }
+
+    (*file_01_buffer)[*file_01_size] = 0;
+
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
     }
     return 0;
 }

@@ -12,5 +12,5 @@ typedef struct node {
 
 #endif
 
-int quizrunner_dataextract(unsigned long int ptrFileSize, char ** ptrFileBuffer, int debug, char *** quiz_detailsBuffer, node_t ** adressof_tail_struct_pointer1, node_t ** adressof_tail_struct_pointer2, unsigned long int * quiz_propAmount_Questions, unsigned long int * quiz_propAmount_Answers);
+int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffer, int int_01, char *** array_string_01, node_t ** struct_01, node_t ** struct_02, unsigned long int * int_amountQuestions, unsigned long int * int_amountAnswers);
 #endif

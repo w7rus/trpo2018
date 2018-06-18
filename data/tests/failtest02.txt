@@ -1,0 +1,4 @@
+NAME=No Data Quiz
+DESCRIPTION=This test is uncompleted and will fail
+AUTHOR=w7rus
+TIME=600

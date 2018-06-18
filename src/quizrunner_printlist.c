@@ -15,21 +15,21 @@ typedef struct node {
 
 #endif
 
-int quizrunner_printlist(node_t * head_struct_pointer, int debug) {
-    if (head_struct_pointer == NULL) {
-        if (debug) {
-            printf("[DEBUG]: Function returned %d\n", 1);
-            printf("[DEBUG]: Pointer points to NULL\n");
+int quizrunner_printlist(node_t * struct_01, int int_01) {
+    if (struct_01 == NULL) {
+        if (int_01) {
+            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Pointer points to NULL");
         }
         return 1;
     }
 
-    for (head_struct_pointer = head_struct_pointer -> next; head_struct_pointer; head_struct_pointer = head_struct_pointer -> next) {
-        printf("[%p] %s\n", head_struct_pointer, head_struct_pointer -> data);
+    for (struct_01 = struct_01 -> next; struct_01; struct_01 = struct_01 -> next) {
+        printf("\n[%p] %s", struct_01, struct_01 -> data);
     }
 
-    if (debug) {
-        printf("[DEBUG]: Function returned %d\n", 0);
+    if (int_01) {
+        printf("\n[DEBUG]: Function returned %d", 0);
     }
     return 0;
 }

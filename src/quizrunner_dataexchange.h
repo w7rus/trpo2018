@@ -12,5 +12,5 @@ typedef struct node {
 
 #endif
 
-int quizrunner_dataexchange(node_t * head_struct_pointer, node_t ** adressof_tail_struct_pointer, int debug);
+int quizrunner_dataexchange(node_t * struct_01, node_t ** struct_02, int int_01);
 #endif

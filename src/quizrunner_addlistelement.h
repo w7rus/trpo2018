@@ -12,5 +12,5 @@ typedef struct node {
 
 #endif
 
-int quizrunner_addlistelement(node_t ** adressof_tail_struct_pointer, char * string_pointer, int debug);
+int quizrunner_addlistelement(node_t ** struct_01, char * string_01, int int_01);
 #endif
