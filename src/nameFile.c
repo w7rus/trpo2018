@@ -22,23 +22,23 @@ void TestFile(){
 		
 		printf("\n---File successfully created\n");
 		
-		printf("|Enter information without spaces|");
+		printf("|Enter information without spaces| \n");
 		
 		printf("\nName test: ");
 		gets(nameTest);
-		fprintf (ptrFile, "%s\n",nameTest);
+		fprintf (ptrFile, "NAME=%s\n",nameTest);
 		
 		printf("Time test: ");
 		gets(timeTest);
-		fprintf (ptrFile, "%s\n", timeTest);
+		fprintf (ptrFile, "TIME=%s\n", timeTest);
 			
 		printf("Question: ");
 		gets(Question);
-		fprintf (ptrFile, "%s\n",Question);
+		fprintf (ptrFile, "QUESTION=%s\n",Question);
 				
 		printf("Answer: ");
 		gets(Answer);
-		fprintf (ptrFile, "%s\n",Answer);
+		fprintf (ptrFile, "ANSWER=%s\n",Answer);
 	}
 	
 	else
