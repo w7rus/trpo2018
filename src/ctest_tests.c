@@ -31,7 +31,7 @@ typedef struct node {
 int debug = 0;
 
 CTEST(file_operations, changedir_1) {
-    char dirpath[MAX_PATH] = ".\\bin\\..\\ctest_env";
+    char dirpath[MAX_PATH] = "ctest_env";
     const int result = quizrunner_changedir(dirpath, debug);
     const int expected = 0;
     ASSERT_EQUAL(expected, result);
