@@ -4,6 +4,7 @@
 #include <string.h>
 
 void TestFile(){
+	int timeOp = 0;
 	int StopEnter = 0;
 	char nameFile[80];
 	char nameTest[80];
@@ -30,12 +31,19 @@ void TestFile(){
 		gets(nameTest);
 		fprintf (ptrFile, "NAME=%s\n",nameTest);
 		
-		printf("Time test: ");
-		scanf("%d", &timeTest);
-		fprintf (ptrFile, "TIME=%d\n", timeTest);
+		printf("\n---Do you want to limit the test on time? yes - 0, no - 1:  ");
+		scanf("%d", &timeOp);
+		printf("\n");
+		
+		if(timeOp == 0){
+			
+			printf("Time test: ");
+			scanf("%d", &timeTest);
+			fprintf (ptrFile, "TIME=%d\n", timeTest);
+			
+		}
 		
 		while(!StopEnter){
-			
 			gets(shadow);
 				
 			printf("Question: ");
