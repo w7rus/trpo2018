@@ -5,4 +5,4 @@ TIME=600
 QUESTION=For single answer?
 ANSWER=1
 QUESTION=For array of answers?
-ANSWER=1,2,3,4,5
+ANSWER=1,2,3,4,5,6

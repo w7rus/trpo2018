@@ -5,4 +5,4 @@ compiler: gcc
 
 script:
   - make test
-  - ./bin/test*
+  - ./bin/test_quiz_runner*

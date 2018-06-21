@@ -271,7 +271,7 @@ int main(int argc, char *argv[]) {
 
     printf("\n\n[->]: Do you want to save results to file? (y/n): ");
     char saveresult[3];
-    scanf("%c", saveresult);
+    scanf("%s", saveresult);
 
     if(saveresult[0] == 'y') {
 
