@@ -30,8 +30,7 @@ int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffe
     int int_bufferPropertyName_switch = 0;
     unsigned long int int_bufferPropertyValue_offset = 0;
 
-    unsigned long int file_01_buffer_offset = 0;
-    for (; file_01_buffer_offset < file_01_size; file_01_buffer_offset++) {
+    for (unsigned long int file_01_buffer_offset = 0; file_01_buffer_offset < file_01_size; file_01_buffer_offset++) {
         if ((*file_01_buffer)[file_01_buffer_offset] == '\n') {
             if ((*file_01_buffer)[file_01_buffer_offset + 1] == '\n') {
                 if (int_01) {
@@ -83,8 +82,7 @@ int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffe
             char * string_bufferPropertyValue = 0;
             string_bufferPropertyValue = (char*) malloc((sizeof(char) * (int_bufferPropertyValue_offset - file_01_buffer_offset) + sizeof(char)));
 
-            unsigned int int_bufferPropertyValue_offsetRelative = 0;
-            for (; file_01_buffer_offset < int_bufferPropertyValue_offset;) {
+            for (unsigned int int_bufferPropertyValue_offsetRelative = 0; file_01_buffer_offset < int_bufferPropertyValue_offset;) {
                 string_bufferPropertyValue[int_bufferPropertyValue_offsetRelative] = (*file_01_buffer)[file_01_buffer_offset];
                 string_bufferPropertyValue[int_bufferPropertyValue_offsetRelative + 1] = 0;
                 file_01_buffer_offset++;

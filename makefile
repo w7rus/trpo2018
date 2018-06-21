@@ -1,5 +1,5 @@
 GCC = gcc
-GCCFLAGS = -c -Wall -Werror -Wno-unused-variable
+GCCFLAGS = -c -Wall -Werror -Wno-unused-variable -std=c99 -std=gnu99
 VPATH = src:build
 PATH_IN = ./src/
 PATH_BUILD = ./build/
