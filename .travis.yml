@@ -5,7 +5,4 @@ compiler: gcc
 
 script:
   - make test
-  - ls
-  - cd bin
-  - ls
-  - ./test*
+  - ./bin/test*
