@@ -3,6 +3,8 @@
 #include <conio.h>
 #include <string.h>
 
+int EndEnter = 0;
+
 void TestFile(){
 	int timeOp = 0;
 	int StopEnter = 0;
@@ -25,7 +27,7 @@ void TestFile(){
 		
 		printf("\n---File successfully created\n");
 		
-		printf("|Enter information without spaces| \n");
+		//printf("|Enter information without spaces| \n");
 		
 		printf("\nName test: ");
 		gets(nameTest);
@@ -41,21 +43,32 @@ void TestFile(){
 			scanf("%d", &timeTest);
 			fprintf (ptrFile, "TIME=%d\n", timeTest);
 			
+			printf("\n");
+			
 		}
 		
 		while(!StopEnter){
-			gets(shadow);
+			gets(shadow);   // цняоюдх анфе лни!!!
 				
 			printf("Question: ");
 			gets(Question);
 			fprintf (ptrFile, "QUESTION=%s\n",Question);
+			
+			printf("\n");
+			
+			printf("|Enter information without spaces| \n");
+			
+			printf("\n");	
 					
 			printf("Answer: ");
 			gets(Answer);
 			fprintf (ptrFile, "ANSWER=%s\n",Answer);
 			
+			printf("\n");
+			
 			printf("(Continue typing: yes - 0, no - 1): ");
 			scanf("%d", &StopEnter);
+			printf("\n");	
 			
 		}	
 	}
