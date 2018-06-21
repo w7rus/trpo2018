@@ -13,7 +13,7 @@
 #define	_CONIO_H_
 
 /* All the headers include this file. */
-#include <_mingw.h>
+#include "_mingw.h"
 
 #ifndef RC_INVOKED
 
