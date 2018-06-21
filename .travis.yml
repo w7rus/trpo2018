@@ -8,4 +8,5 @@ script:
   - make test
   - ls
   - cd bin
-  - ./test.exe
+  - ls
+  - ./test*
