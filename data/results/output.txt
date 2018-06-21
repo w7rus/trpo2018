@@ -1,0 +1,19 @@
+Filename: test.txt
+Name: A simple Quiz
+Description: A simple quiz to check functionality of QuizRunner
+Author: w7rus
+Time: 600 s.
+
+Question: For single answer?
+Answer: 1
+Input: this_answer_is_wrong
+Valid: False
+
+Question: For array of answers?
+Answer: 1,2,3,4,5
+Input: 5
+Valid: Yes
+
+[INFO]: Test completed with 1 out of 2 correct answers
+[INFO]: Test pass percentage is: 50.00
+[INFO]: Test pass took 27 s. out of 600 s.

@@ -1,0 +1,18 @@
+TI=For array of answers?
+ANSWER=1,2,3,4,5ME=600
+QUESTION=For single answer?
+ANS simple =For array of answers?
+A=For array of answers?
+ANSWER=1,2,3,4,5NSWER=1,2,3,4,5quiz to check functionality of QuizRunneWER=1
+QUESTION=For array of answers?NAME=A simple Quiz
+DESCSTION=For single answer?
+ANSWER=1
+QUES=For array of answers?
+ANSWER=1,2,3,4,5TION=For array of answers?
+ANSWER=1,2,3,4,5RIPTION=A simple q=For array of answers?
+A=For array of answers?
+ANSWER=1,2,3,4,5NSWER=1,2,3,4,5uiz to check functionality of QuizRunner
+AUTHOR=w7rus
+TIM=For array of answers?
+ANSWER=1,2,3,4,5E=600
+QUE
