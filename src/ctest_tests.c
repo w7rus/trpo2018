@@ -15,7 +15,7 @@
 
 #include "ctest.h"
 
-#define BUFSIZE MAX_PATH
+#define	MAX_PATH (260)
 
 #ifndef _QUIZRUNNER_NODESTRUCT_DEFINE
 #define _QUIZRUNNER_NODESTRUCT_DEFINE

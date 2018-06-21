@@ -6,4 +6,6 @@ compiler: gcc
 
 script:
   - make test
-  - ./bin/test.exe
+  - ls
+  - cd bin
+  - ./test.exe

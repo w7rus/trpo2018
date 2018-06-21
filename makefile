@@ -1,5 +1,5 @@
 GCC = gcc
-GCCFLAGS = -c -Wall -Werror
+GCCFLAGS = -c -Wall -Werror -Wno-unused-variable
 VPATH = src:build
 PATH_IN = ./src/
 PATH_BUILD = ./build/
