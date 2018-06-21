@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 
 #ifndef _QUIZRUNNER_NODESTRUCT_DEFINE
@@ -39,8 +37,8 @@ int quizrunner_datacompare(node_t * struct_01, node_t * struct_02, unsigned long
             char ** array_string_buffer_Inputs = 0;
             array_string_buffer_Inputs = malloc(sizeof(char *) * (data1_elementAmount + 1));
 
-            for (unsigned long int int_buffer_InputsElements_offset = 0; int_buffer_InputsElements_offset < (data1_elementAmount + 1); int_buffer_InputsElements_offset++) {
-                array_string_buffer_Inputs[int_buffer_InputsElements_offset] = malloc(sizeof(char) * 255 + sizeof(char));
+            for (unsigned long int int_buffer_InputsElements_offset01 = 0; int_buffer_InputsElements_offset01 < (data1_elementAmount + 1); int_buffer_InputsElements_offset01++) {
+                array_string_buffer_Inputs[int_buffer_InputsElements_offset01] = malloc(sizeof(char) * 255 + sizeof(char));
             }
 
             unsigned long int int_buffer_InputsElements_offset = 0;

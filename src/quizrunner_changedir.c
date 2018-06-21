@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
 #include <unistd.h>
 
-#define BUFSIZE MAX_PATH
+#define MAX_PATH (260)
 
 int quizrunner_changedir(char string_01[MAX_PATH], int int_01) {
     int int_02 = chdir(string_01);
