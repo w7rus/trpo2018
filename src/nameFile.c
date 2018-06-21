@@ -3,15 +3,14 @@
 #include <conio.h>
 #include <string.h>
 
-int EndEnter = 0;
-
 void TestFile(){
 	int timeOp = 0;
 	int StopEnter = 0;
 	char nameFile[80];
+	char Description[450];
 	char nameTest[80];
 	int timeTest = 0;
-	char Question[280];
+	char Question[450];
 	char Answer[280];
 	char shadow[0];
 	
@@ -32,6 +31,10 @@ void TestFile(){
 		printf("\nName test: ");
 		gets(nameTest);
 		fprintf (ptrFile, "NAME=%s\n",nameTest);
+		
+		printf("\nDescription: ");
+		gets(Description);
+		fprintf (ptrFile, "DESCRIPTION=%s\n",Description);
 		
 		printf("\n---Do you want to limit the test on time? yes - 0, no - 1:  ");
 		scanf("%d", &timeOp);
@@ -74,8 +77,9 @@ void TestFile(){
 	}
 	
 	else
-		printf("ERROR_43");	
-	printf("\n---File successfully closed");
+		printf("---Error creating file");	
+		
+	printf("\n---File successfully closed\n");
 	fclose(ptrFile);
 }
 
