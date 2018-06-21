@@ -381,7 +381,7 @@ int main(int argc, char *argv[]) {
 
     }
 
-    printf("\n[INFO]: Exiting Quiz tests sequence... Hit any key to close...");
+    printf("\n\033[0;33m[INFO]\033[0m: Exiting Quiz tests sequence... Hit any key to close...");
 
     getch();
 
