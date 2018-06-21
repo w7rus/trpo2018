@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "conio.h"
 #include <string.h>
-#include <unistd.h>
 
 #ifndef _QUIZRUNNER_NODESTRUCT_DEFINE
 #define _QUIZRUNNER_NODESTRUCT_DEFINE

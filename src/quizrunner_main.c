@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "conio.h"
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
@@ -225,7 +224,7 @@ int main(int argc, char *argv[]) {
     if (debug) {
         printf("\n\n[DEBUG]: Print what is saved in head_listInput");
         quizrunner_printlist(head_listInput, debug);
-        putch('\n');
+        printf("\n");
     }
 
     printf("\n\033[0;36m[Stage 7/11]\033[0m: Comparing user input data to answers... ");
@@ -242,12 +241,12 @@ int main(int argc, char *argv[]) {
 
     if (debug) {
         printf("\n\n[DEBUG: Print what is saved in quiz_InputCheckArray\n");
-        putch('[');
+        printf("[");
         for (unsigned long int quiz_InputCheckArrayOffset = 0; quiz_InputCheckArrayOffset < quiz_propAmount_Answers; quiz_InputCheckArrayOffset++) {
             printf(" %d ", quiz_InputCheckArray[quiz_InputCheckArrayOffset]);
         }
-        putch(']');
-        putch('\n');
+        printf("]");
+        printf("\n");
     }
 
     printf("\n\033[0;36m[Stage 7/11]\033[0m: Printing Quiz test pass data...");
@@ -270,9 +269,11 @@ int main(int argc, char *argv[]) {
         printf("\n\033[0;33m[INFO]\033[0m: Quiz test passing took %lu s. out of %s s.", (timelogpoint02 - timelogpoint01)/1000, quiz_detailsBuffer[3]);
     }
 
-    printf("\n\n[->]: Do you want to save results to file? (ENTER): ");
+    printf("\n\n[->]: Do you want to save results to file? (y/n): ");
+    char saveresult[3];
+    scanf("%c", saveresult);
 
-    if(getch() == 13) {
+    if(saveresult[0] == 'y') {
 
         printf("\n\n[->]: Please input path to quiz tests results directory (for default type \".\\..\\results\"): ");
         scanf("%s", workpath);
@@ -382,8 +383,6 @@ int main(int argc, char *argv[]) {
     }
 
     printf("\n\033[0;33m[INFO]\033[0m: Exiting Quiz tests sequence... Hit any key to close...");
-
-    getch();
 
     system("cls");
 
