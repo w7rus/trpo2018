@@ -69,7 +69,7 @@ int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffe
         if (int_bufferPropertyName_switch == 1) {
             int_bufferPropertyValue_offset = file_01_buffer_offset;
 
-            while ((*file_01_buffer)[int_bufferPropertyValue_offset] != '\n') {
+            while ((*file_01_buffer)[int_bufferPropertyValue_offset] != '\n' && int_bufferPropertyValue_offset < file_01_size) {
                 int_bufferPropertyValue_offset++;
             }
 
