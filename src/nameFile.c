@@ -7,6 +7,7 @@ void TestFile(){
 	int timeOp = 0;
 	int StopEnter = 0;
 	char nameFile[80];
+	char Author[40];
 	char Description[450];
 	char nameTest[80];
 	int timeTest = 0;
@@ -26,11 +27,14 @@ void TestFile(){
 		
 		printf("\n---File successfully created\n");
 		
-		//printf("|Enter information without spaces| \n");
 		
 		printf("\nName test: ");
 		gets(nameTest);
 		fprintf (ptrFile, "NAME=%s\n",nameTest);
+		
+		printf("\nAuthor test: ");
+		gets(Author);
+		fprintf (ptrFile, "AUTHOR=%s\n",Author);
 		
 		printf("\nDescription: ");
 		gets(Description);
@@ -51,7 +55,7 @@ void TestFile(){
 		}
 		
 		while(!StopEnter){
-			gets(shadow);   // цняоюдх анфе лни!!!
+			gets(shadow);
 				
 			printf("Question: ");
 			gets(Question);
@@ -77,10 +81,14 @@ void TestFile(){
 	}
 	
 	else
-		printf("---Error creating file");	
+		printf("---Error creating file");
+			
+	if(ptrFile != NULL){
 		
 	printf("\n---File successfully closed\n");
+	
 	fclose(ptrFile);
+	}
 }
 
 
