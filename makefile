@@ -1,22 +1,15 @@
-GCCFLAGS = -c -Wall -Werror
+GCC = gcc
+GCCFLAGS = -c -Wall -Werror -Wno-unused-variable -std=c99 -std=gnu99
 VPATH = src:build
-PATH_SRC = ./src/
+PATH_IN = ./src/
 PATH_BUILD = ./build/
+PATH_OUT = ./bin/
+QM_F_MAIN = quizmaker_main
 
-all: bin build prog
+all: app2
 
-bin:
-	mkdir -p bin
+app2: $(QM_F_MAIN).o
+	$(GCC) $(PATH_BUILD)$(QM_F_MAIN).o -o $(PATH_OUT)quiz_maker.exe
 
-build:
-	mkdir -p build
-
-prog: testGenerator_main.o
-	g++ build/testGenerator_main.o -o bin/prog
-
-testGenerator_main.o: testGenerator_main.c
-	g++ $(GCCFLAGS) $(PATH_SRC)testGenerator_main.c -o $(PATH_BUILD)testGenerator_main.o
-
-.PHONY: clean
-clean:
-	rm -rf build bin
+$(QM_F_MAIN).o: $(QM_F_MAIN).c
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QM_F_MAIN).o $(PATH_IN)$(QM_F_MAIN).c
