@@ -14,6 +14,7 @@
 #include "quizrunner_dataextract.h"
 #include "quizrunner_dataexchange.h"
 #include "quizrunner_datacompare.h"
+#include "quizrunner_crlfbufferfix.h"
 
 #define MAX_PATH (260)
 
@@ -112,6 +113,23 @@ int main(int argc, char *argv[]) {
         printf("\033[0;32m[Success]\033[0m");
     }
 
+    unsigned long int ptrFileSize_crlfbufferfix = 0;
+    char * ptrFileBuffer_crlfbufferfix = NULL;
+
+    int quizrunner_crlfbufferfix_result = quizrunner_crlfbufferfix(ptrFileSize, ptrFileBuffer, &ptrFileSize_crlfbufferfix, &ptrFileBuffer_crlfbufferfix, debug);
+
+    if (quizrunner_crlfbufferfix_result) {
+        if (quizrunner_crlfbufferfix_result == 1) {
+            printf("\n\033[0;31m[Error]\033[0m: Missing required data");
+        }
+        if (quizrunner_crlfbufferfix_result == 2) {
+            printf("\n\033[0;31m[Error]\033[0m: Failed to write file to buffer");
+        }
+        return 1;
+    } else {
+        printf("\033[0;32m[Success]\033[0m");
+    }
+
     printf("\n\033[0;36m[Stage 4/11]\033[0m: Closing opened file... ");
 
     if(quizrunner_closefile(&ptrFile, debug)) {
@@ -125,7 +143,7 @@ int main(int argc, char *argv[]) {
 
     if (debug) {
         printf("\n\n[DEBUG]: Print what is saved in ptrFileBuffer");
-        printf("\n%s\n", ptrFileBuffer);
+        printf("\n%s\n", ptrFileBuffer_crlfbufferfix);
     }
 
     printf("\n\033[0;36m[Stage 5/11]\033[0m: Extracting data of Quiz test from buffer... ");
@@ -161,7 +179,7 @@ int main(int argc, char *argv[]) {
     unsigned long int quiz_propAmount_Questions = 0;
     unsigned long int quiz_propAmount_Answers = 0;
 
-    int quizrunner_dataextract_result = quizrunner_dataextract(ptrFileSize, &ptrFileBuffer, debug, &quiz_detailsBuffer, &tail_listQuestion, &tail_listAnswer, &quiz_propAmount_Questions, &quiz_propAmount_Answers);
+    int quizrunner_dataextract_result = quizrunner_dataextract(ptrFileSize_crlfbufferfix, &ptrFileBuffer_crlfbufferfix, debug, &quiz_detailsBuffer, &tail_listQuestion, &tail_listAnswer, &quiz_propAmount_Questions, &quiz_propAmount_Answers);
     if(quizrunner_dataextract_result) {
         if (quizrunner_dataextract_result == 1) {
             printf("\n\033[0;31m[Error]\033[0m: Missing required data");

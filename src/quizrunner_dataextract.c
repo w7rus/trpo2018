@@ -34,7 +34,7 @@ int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffe
         if ((*file_01_buffer)[file_01_buffer_offset] == '\n') {
             if ((*file_01_buffer)[file_01_buffer_offset + 1] == '\n') {
                 if (int_01) {
-                    printf("\n[DEBUG]: Function returned %d", 1);
+                    printf("\n[DEBUG]: Function returned %d", 2);
                     printf("\n[DEBUG]: File syntax is incorrect. Consider checking documentation...");
                 }
                 return 2;
@@ -46,7 +46,7 @@ int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffe
         if ((*file_01_buffer)[file_01_buffer_offset] == '=') {
             if ((*file_01_buffer)[file_01_buffer_offset + 1] == '\n') {
                 if (int_01) {
-                    printf("\n[DEBUG]: Function returned %d", 1);
+                    printf("\n[DEBUG]: Function returned %d", 2);
                     printf("\n[DEBUG]: File syntax is incorrect. Consider checking documentation...");
                 }
                 return 2;
@@ -125,7 +125,7 @@ int quizrunner_dataextract(unsigned long int file_01_size, char ** file_01_buffe
 
     if (*int_amountQuestions != *int_amountAnswers) {
         if (int_01) {
-            printf("\n[DEBUG]: Function returned %d", 1);
+            printf("\n[DEBUG]: Function returned %d", 2);
             printf("\n[DEBUG]: File syntax is incorrect. Consider checking documentation...");
         }
         return 2;

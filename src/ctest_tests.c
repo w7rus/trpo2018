@@ -12,6 +12,7 @@
 #include "quizrunner_dataextract.h"
 #include "quizrunner_dataexchange.h"
 #include "quizrunner_datacompare.h"
+#include "quizrunner_crlfbufferfix.h"
 
 #include "ctest.h"
 
@@ -171,6 +172,51 @@ CTEST(code_operations, printlist_2) {
     head_listQuestion = tail_listQuestion = NULL;
     const int result = quizrunner_printlist(head_listQuestion, debug);
     const int expected = 1;
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(code_operations, crlfbufferfix_1) {
+    FILE * ptrFile = NULL;
+    quizrunner_openfile(&ptrFile, "410346.jpg", debug, "rb");
+    unsigned long int ptrFileSize = 0;
+    char * ptrFileBuffer = NULL;
+    quizrunner_createbuffer(&ptrFile, &ptrFileSize, &ptrFileBuffer, debug);
+    unsigned long int ptrFileSizeRead = 0;
+    quizrunner_writetobuffer(&ptrFile, &ptrFileSize, &ptrFileSizeRead, &ptrFileBuffer, debug);
+    unsigned long int ptrFileSize_crlfbufferfix = 0;
+    char * ptrFileBuffer_crlfbufferfix = NULL;
+    const int result = quizrunner_crlfbufferfix(ptrFileSize, ptrFileBuffer, &ptrFileSize_crlfbufferfix, &ptrFileBuffer_crlfbufferfix, debug);
+    const int expected = 1;
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(code_operations, crlfbufferfix_2) {
+    FILE * ptrFile = NULL;
+    quizrunner_openfile(&ptrFile, "", debug, "rb");
+    unsigned long int ptrFileSize = 0;
+    char * ptrFileBuffer = NULL;
+    quizrunner_createbuffer(&ptrFile, &ptrFileSize, &ptrFileBuffer, debug);
+    unsigned long int ptrFileSizeRead = 0;
+    quizrunner_writetobuffer(&ptrFile, &ptrFileSize, &ptrFileSizeRead, &ptrFileBuffer, debug);
+    unsigned long int ptrFileSize_crlfbufferfix = 0;
+    char * ptrFileBuffer_crlfbufferfix = NULL;
+    const int result = quizrunner_crlfbufferfix(ptrFileSize, ptrFileBuffer, &ptrFileSize_crlfbufferfix, &ptrFileBuffer_crlfbufferfix, debug);
+    const int expected = 1;
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(code_operations, crlfbufferfix_3) {
+    FILE * ptrFile = NULL;
+    quizrunner_openfile(&ptrFile, "test.txt", debug, "rb");
+    unsigned long int ptrFileSize = 0;
+    char * ptrFileBuffer = NULL;
+    quizrunner_createbuffer(&ptrFile, &ptrFileSize, &ptrFileBuffer, debug);
+    unsigned long int ptrFileSizeRead = 0;
+    quizrunner_writetobuffer(&ptrFile, &ptrFileSize, &ptrFileSizeRead, &ptrFileBuffer, debug);
+    unsigned long int ptrFileSize_crlfbufferfix = 0;
+    char * ptrFileBuffer_crlfbufferfix = NULL;
+    const int result = quizrunner_crlfbufferfix(ptrFileSize, ptrFileBuffer, &ptrFileSize_crlfbufferfix, &ptrFileBuffer_crlfbufferfix, debug);
+    const int expected = 0;
     ASSERT_EQUAL(expected, result);
 }
 
