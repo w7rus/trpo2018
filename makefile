@@ -19,7 +19,7 @@ QZ_F_CRLFBF = quizrunner_crlfbufferfix
 CTEST_MAIN = ctest_main
 CTEST_TESTS = ctest_tests
 
-all: app test
+all: app app2 test
 
 app: $(QZ_F_MAIN).o $(QZ_F_CHDIR).o $(QZ_F_CFILE).o $(QZ_F_CRBUF).o $(QZ_F_OFILE).o $(QZ_F_WTBUF).o $(QZ_F_PRTLST).o $(QZ_F_ADDLSTE).o $(QZ_F_DTEXTR).o $(QZ_F_DTEXCNG).o $(QZ_F_DTCMP).o $(QZ_F_CRLFBF).o
 	$(GCC) $(PATH_BUILD)$(QZ_F_MAIN).o $(PATH_BUILD)$(QZ_F_CHDIR).o $(PATH_BUILD)$(QZ_F_CFILE).o $(PATH_BUILD)$(QZ_F_CRBUF).o $(PATH_BUILD)$(QZ_F_OFILE).o $(PATH_BUILD)$(QZ_F_WTBUF).o $(PATH_BUILD)$(QZ_F_PRTLST).o $(PATH_BUILD)$(QZ_F_ADDLSTE).o $(PATH_BUILD)$(QZ_F_DTEXTR).o $(PATH_BUILD)$(QZ_F_DTEXCNG).o $(PATH_BUILD)$(QZ_F_DTCMP).o $(PATH_BUILD)$(QZ_F_CRLFBF).o -o $(PATH_OUT)quiz_runner.exe
@@ -68,3 +68,11 @@ $(QZ_F_DTCMP).o: $(QZ_F_DTCMP).c $(QZ_F_DTCMP).h
 
 $(QZ_F_CRLFBF).o: $(QZ_F_CRLFBF).c $(QZ_F_CRLFBF).h
 	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QZ_F_CRLFBF).o $(PATH_IN)$(QZ_F_CRLFBF).c
+
+QM_F_MAIN = quizmaker_main
+
+app2: $(QM_F_MAIN).o
+	$(GCC) $(PATH_BUILD)$(QM_F_MAIN).o -o $(PATH_OUT)quiz_maker.exe
+
+$(QM_F_MAIN).o: $(QM_F_MAIN).c
+	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QM_F_MAIN).o $(PATH_IN)$(QM_F_MAIN).c
