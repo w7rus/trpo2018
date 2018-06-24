@@ -11,11 +11,11 @@ bin:
 build:
 	mkdir -p build
 
-prog: nameFile.o
-	g++ build/nameFile.o -o bin/prog
+prog: testGenerator_main.o
+	g++ build/testGenerator_main.o -o bin/prog
 
-nameFile.o: nameFile.c
-	g++ $(GCCFLAGS) $(PATH_SRC)nameFile.c -o $(PATH_BUILD)nameFile.o
+testGenerator_main.o: testGenerator_main.c
+	g++ $(GCCFLAGS) $(PATH_SRC)testGenerator_main.c -o $(PATH_BUILD)testGenerator_main.o
 
 .PHONY: clean
 clean:

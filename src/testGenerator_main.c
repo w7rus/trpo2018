@@ -7,6 +7,7 @@ void TestFile(){
 	int timeOp = 0;
 	int StopEnter = 0;
 	char nameFile[80];
+	char txt[] = ".txt";
 	char Author[40];
 	char Description[450];
 	char nameTest[80];
@@ -21,7 +22,7 @@ void TestFile(){
 	
 	FILE *ptrFile;
 	
-	ptrFile = fopen(nameFile,"w");
+	ptrFile = fopen(strcat(nameFile,txt), "w+");
 	
 	if(ptrFile != NULL){
 		
