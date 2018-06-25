@@ -76,3 +76,14 @@ app2: $(QM_F_MAIN).o
 
 $(QM_F_MAIN).o: $(QM_F_MAIN).c
 	$(GCC) $(GCCFLAGS) -o $(PATH_BUILD)$(QM_F_MAIN).o $(PATH_IN)$(QM_F_MAIN).c
+
+ifeq ($(OS),Windows_NT)
+clean:
+	del /S *.o
+else
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+clean:
+	find . -name \*.o -type f -exec rm -f {} \;
+endif
+endif
